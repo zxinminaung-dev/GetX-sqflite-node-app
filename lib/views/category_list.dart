@@ -39,6 +39,8 @@ class CategoryList extends StatelessWidget {
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
               child: Card(
+                shadowColor: Colors.cyan,
+                color: Colors.white,
                 child: ListTile(
                   onTap: (){
                     Get.toNamed('/task',arguments: [category.id]); 
@@ -48,20 +50,11 @@ class CategoryList extends StatelessWidget {
                     category.name!,
                     style: const TextStyle(color: Colors.cyan),
                   ),
-                  trailing: const Icon(Icons.arrow_right_rounded),
+                  trailing: const Icon(Icons.arrow_right_rounded,size: 24,),
                   leading: Wrap(
                     spacing: 0,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right:3.0),
-                        child: InkWell(
-                          onTap: () {
-                            _showEditDialog(category);
-                          },
-                          child: const Icon(Icons.edit_note,size: 30, color: Colors.amber),
-                        ),
-                      ),
-                      InkWell(
+                       GestureDetector(
                         onTap: () {
                           _showDeleteDialog(category);
                         },
@@ -70,6 +63,16 @@ class CategoryList extends StatelessWidget {
                           color: Colors.red,
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left:3.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            _showEditDialog(category);
+                          },
+                          child: const Icon(Icons.edit_note,size: 30, color: Colors.amber),
+                        ),
+                      ),
+                     
                     ],
                   ),
                 ),
@@ -93,7 +96,7 @@ class CategoryList extends StatelessWidget {
     _catDecController.text=category.description ==null ? '' : category.description! ;
     Get.defaultDialog(
         title: 'Edit Category',
-        titleStyle: const TextStyle(color: Colors.black, fontSize: 16),
+        titleStyle: const TextStyle(color: Colors.cyan, fontSize: 16),
         content: Column(
           children: [
           //   TextField(
@@ -103,17 +106,27 @@ class CategoryList extends StatelessWidget {
           //       labelText: 'Month',
           //       labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
           // ),
-            TextField(
-              controller: _categoryController,
-              decoration: const InputDecoration(
-                  labelText: 'Category Title',
-                  labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(left: 10,right: 10,bottom: 10,top: 10),
+              child: TextField(
+                controller: _categoryController,
+                decoration: const InputDecoration(
+                   border:OutlineInputBorder(),
+                    labelText: 'Category Title',
+                    labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+              ),
             ),
-            TextField(
-              controller: _catDecController,
-              decoration: const InputDecoration(
-                  labelText: 'Description',
-                  labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+              child: TextField(
+                controller: _catDecController,              
+                decoration: const InputDecoration(
+                   border:OutlineInputBorder(),
+                    labelText: 'Description',
+                    labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+              ),
             ),
           ],
         ),
@@ -170,20 +183,30 @@ class CategoryList extends StatelessWidget {
     _monthTextController.text=monthname;
     Get.defaultDialog(
         title: 'Add Category',
-        titleStyle: const TextStyle(color: Colors.black, fontSize: 16),
+        titleStyle: const TextStyle(color: Colors.cyan, fontSize: 16),
         content: Column(
           children: [
-            TextField(
-              controller: _categoryController,
-              decoration: const InputDecoration(
-                  labelText: 'Category Title',
-                  labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(left: 10,right: 10,bottom: 10,top: 10),
+              child: TextField(
+                controller: _categoryController,
+                decoration: const InputDecoration(
+                   border:OutlineInputBorder(),
+                    labelText: 'Category Title',
+                    labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+              ),
             ),
-            TextField(
-              controller: _catDecController,
-              decoration: const InputDecoration(
-                  labelText: 'Description',
-                  labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+              child: TextField(
+                controller: _catDecController,              
+                decoration: const InputDecoration(
+                   border:OutlineInputBorder(),
+                    labelText: 'Description',
+                    labelStyle: TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+              ),
             ),
           ],
         ),

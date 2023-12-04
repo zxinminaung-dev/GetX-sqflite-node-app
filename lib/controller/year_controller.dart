@@ -28,7 +28,23 @@ class YearController extends GetxController {
     }
     return id;
   }
+  Future<int> deleteYear(Year year) async{
+    int id = 0;
+    try{
+      id = await context.deleteYear(year.id!);
+      // if(id>0){
+      //   List<Months> months= await context.getMonthsByYearId(id);
+      //   for (var data in months){
+      //      late int res;
+      //      res= await context.deleteMonth(data.id!);
+      //       print(res);
+      //   }
+      // }
+    }catch(err){
 
+    }
+    return id;
+  }
   void changeExpanded(int index) {
     if (yearDataList[index].months.isNotEmpty) {
       if (yearDataList[index].isExpanded.value) {

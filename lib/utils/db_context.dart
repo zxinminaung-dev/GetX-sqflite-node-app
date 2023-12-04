@@ -189,12 +189,21 @@ class DbContext {
       INSERT INTO months(month,yearId) VALUES(?,?)
     ''', [month.month, month.yearId]);
   }
-
+  Future<int> deleteYear(int id)async{
+    Database db= await database;
+    return await db.delete('years',where: 'id = ?', whereArgs: [id]);
+  }
   Future<int> deleteMonth(int id) async {
     Database db = await database;
     return await db.delete('months', where: 'id = ?', whereArgs: [id]);
   }
-
+  Future <List<Months>> getMonthsByYearId(int yearId) async{
+     Database db = await database;
+     List<Map<String,dynamic>> monthList= await db.query('months',where: 'yearId = ?', whereArgs: [yearId]);
+     List<Months> month =
+            monthList.map((month) => Months.fromMap(month)).toList();
+            return month;
+  }
   Future<List<YearData>> getYearDataList() async {
     List<YearData> list = [];
     Database db = await database;

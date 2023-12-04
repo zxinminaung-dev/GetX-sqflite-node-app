@@ -31,25 +31,55 @@ class YearList extends GetView<YearController> {
               return ExpansionPanel(
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return ListTile(
-                      leading: InkWell(
-                        onTap: (){
-                            _showAddMonthDialog(year.year!.id!);
-                        },
-                        child: const Padding(
-                          padding:  EdgeInsets.only(right: 10.0),
-                          child:  Icon(Icons.create_new_folder_sharp,
-                              color: Color.fromARGB(255, 245, 245, 115),size: 28,),
-                        ),
+                      leading: Wrap(
+                        spacing: 0.0,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                                _showDeleteYearDialog(year.year!);
+                            },
+                            child: const Padding(
+                              padding:  EdgeInsets.only(right: 0.0),
+                              child:  Icon(Icons.delete,
+                                  color: Colors.red,size: 26,),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                                _showAddMonthDialog(year.year!.id!);
+                            },
+                            child: const Padding(
+                              padding:  EdgeInsets.only(left: 5.0),
+                              child:  Icon(Icons.create_new_folder_sharp,
+                                  color: Colors.cyan,size: 26,),
+                            ),
+                          ),
+                        ],
                       ),
-                      title: Text('${year.year!.year}',style:const TextStyle(color: Colors.cyan),),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${year.year!.year}',style:const TextStyle(color: Colors.cyan),),
+                          // Container(
+                          //   margin: EdgeInsets.only(left: 0),
+                          //   color:Colors.cyan,
+                          //   height: 0.6,
+                          // ) ,   
+                        ],
+                      ),
                     );
                 },
                 body: Column(
                   children: year.months
                       .map<Widget>((Months month) => Column(
-                        children: [                          
+                        children: [     
+                          Container(
+                            margin: EdgeInsets.only(left: 30),
+                            color:Colors.cyan,
+                            height: 0.6,
+                          ) ,                    
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 30),
                             child: ListTile(     
                               onTap: (){
                                 Get.toNamed('/category',arguments: [month.month,year.year!.id,month.id]);
@@ -85,6 +115,29 @@ class YearList extends GetView<YearController> {
       ),
     );
   }
+  _showDeleteYearDialog(Year year){
+    Get.defaultDialog(      
+      titleStyle: const TextStyle(fontSize: 16, color: Colors.amber),
+      title: 'Delete Alert',
+      content: Text('Are you sure to delete${year.year} ?'),
+      actions: [
+         TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {    
+              controller.deleteYear(year); 
+              controller.fetchDataList();       
+              Get.back();
+            },
+            child: const Text('Delete',style: TextStyle(color: Colors.red),),
+          ),
+      ]
+    );
+  }
  _showDeleteDialog(Months month) {
     Get.defaultDialog(
         titleStyle: const TextStyle(fontSize: 16, color: Colors.amber),
@@ -109,16 +162,21 @@ class YearList extends GetView<YearController> {
   }
   _showAddDialog() {
     Get.defaultDialog(
-        title: 'Folder',
-        titleStyle: const TextStyle(color: Colors.black, fontSize: 16),
+        title: 'Year Folder',
+        titleStyle: const TextStyle(color: Colors.cyan, fontSize: 16),
         content: Column(
           children: [
-            TextField(
-              controller: _yearTextController,
-              decoration: const InputDecoration(
-                  labelText: 'Folder Name',
-                  labelStyle:
-                      TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            Container(
+              height: 50,
+              margin: EdgeInsets.only(left: 10,right: 10),
+              child: TextField(
+                controller: _yearTextController,
+                decoration: const InputDecoration(
+                   border:OutlineInputBorder(),
+                    labelText: 'Folder Name',
+                    labelStyle:
+                        TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+              ),
             ),
           ],
         ),
@@ -147,15 +205,22 @@ class YearList extends GetView<YearController> {
   _showAddMonthDialog(int yearId) {
     Get.defaultDialog(
         title: 'Child Folder',
-        titleStyle: const TextStyle(color: Colors.black, fontSize: 16),
+        titleStyle: const TextStyle(color: Colors.cyan, fontSize: 16),
         content: Column(
           children: [
-            TextField(
-              controller: _monthContoller,
-              decoration: const InputDecoration(
-                  labelText: 'Folder Name',
-                  labelStyle:
-                      TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+            Container(
+              height: 50,
+              child: Padding(
+                padding: const EdgeInsets.only(left:10.0,right: 10.0),
+                child: TextField(
+                  controller: _monthContoller,
+                  decoration: const InputDecoration(
+                      labelText: 'Folder Name',
+                      border:OutlineInputBorder(),
+                      labelStyle:
+                          TextStyle(fontSize: 14, fontStyle: FontStyle.italic)),
+                ),
+              ),
             ),
           ],
         ),
